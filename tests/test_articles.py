@@ -133,4 +133,4 @@ class TestArticleViews:
         authorp = resp.json['comment']['author']
         del authorp['following']
         # assert profile_schema.dump(user).data['profile'] == authorp
-        assert profile_schema.dump(user)['profile'] == authorp
+        assert profile_schema.dump(user).data['profile'] == authorp
