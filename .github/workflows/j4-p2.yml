@@ -1,0 +1,33 @@
+name: J4 P2 bounded verification
+on:
+  push:
+    branches: ['j4/p2-*']
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.7'
+      - run: pip install 'pip<24.1' 'setuptools<58' wheel
+      - run: pip install -r j4-requirements.txt
+      - name: Project tests
+        run: python -m pytest -v --junitxml=project-tests.xml
+      - name: Boot and characterize
+        run: |
+          python j4_boot.py > boot.log 2>&1 &
+          python j4_probe.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evidence
+          path: |
+            surface.actual.json
+            project-tests.*
+            boot.log
+            routes.txt
+          retention-days: 30
