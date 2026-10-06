@@ -13,7 +13,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.7'
-      - run: pip install 'pip<24.1' 'setuptools<58' wheel
+      - run: pip install 'pip<24.1' 'setuptools==44.1.1' wheel
       - run: pip install -r j4-requirements.txt
       - name: Project tests
         run: python -m pytest -v --junitxml=project-tests.xml
